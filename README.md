@@ -2,4 +2,10 @@
 使用到的代码及测试代码等
 
 - [x] Thread c++ demo in thread_demo folder
-包含四个文件，主要是mutex对值以及进程的管理之类的。
+
+- dataset
+
+- [x] kitti2bag: https://github.com/tomas789/kitti2bag
+- [x] semantickitti2bag: https://github.com/amslabtech/semantickitti2bag
+- [ ] kitti3602bag:TBA
+
