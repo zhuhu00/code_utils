@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+.idea/
+
+OpenCV4_code/ch2/build/
+
+OpenCV4_code/ch2/cmake-build-debug/
