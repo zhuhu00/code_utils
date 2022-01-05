@@ -3,6 +3,6 @@
 
 - [x] Thread c++ demo in `thread_demo` folder,有关多线程的代码
 - [x] ROS的相关测试代码，在`ros_test`
-- [ ] ROS使用python3的代码，以及使用anaconda的代码
+- [x] ROS使用python3的代码,使用anaconda的python版本会出错。
 - [x] Docker的学习和测试,在`docker`文件夹下
 
