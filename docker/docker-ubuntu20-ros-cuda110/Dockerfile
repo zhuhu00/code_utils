@@ -3,7 +3,7 @@
 
 FROM nvidia/cudagl:11.0-devel-ubuntu20.04
 
-
+# ============以下内容在镜像中已有==zhuhu/cuda110-ros-ubuntu20:0.1=======
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
@@ -44,8 +44,6 @@ RUN apt update \
         zip \
         unzip \
         wget \
-        # python-dev \
-        # python-pip \
         python3-dev \
         python3-pip  \
         libeigen3-dev \
@@ -74,15 +72,12 @@ RUN apt-get purge -y cmake \
     && rm cmake-3.18.1 -rf 
 
 ## update pip
-# RUN curl -kL https://bootstrap.pypa.io/pip/2.7/get-pip.py | python  \
-#     && curl -kL https://bootstrap.pypa.io/pip/3.6/get-pip.py | python3 
 RUN curl -kL https://bootstrap.pypa.io/pip/3.6/get-pip.py | python3 
 
 # Add ROS repository
 RUN /bin/bash -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list' && \
 # Keys for ROS repository
     curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -\
-    # apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654 && \
 # Install ROS-Base packages
     && apt-get update && apt install -f 
     
@@ -153,6 +148,10 @@ RUN cat /tmp/condarc >> ~/.bashrc && source ~/.bashrc && source /etc/profile
 ENV PATH /opt/conda/bin:$PATH 
 RUN python --version && pip -V
 
+
+#  ===========分割线====以上为cuda102-ubuntu-ros的内容==========
+
+#  ===========以下为自己可以添加的内容
 # 以上构建成了docker镜像,可在官网拉取
 # 根据不同的环境,可以在这里安装对应的依赖
 RUN pip install protobuf==3.17.3 colorama

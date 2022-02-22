@@ -3,7 +3,7 @@
 
 FROM nvidia/cudagl:10.2-devel-ubuntu18.04
 
-
+# ============以下内容在镜像已有=zhuhu/cuda102-ros-ubuntu18:0.1========
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
@@ -145,6 +145,11 @@ RUN cat /tmp/condarc >> ~/.bashrc && source ~/.bashrc && source /etc/profile
 ENV PATH /opt/conda/bin:$PATH 
 RUN python --version && pip -V
 
+
+#  ===========分割线====以上为cuda102-ubuntu-ros的内容==========
+
+#  ===========以下为自己可以添加的内容
+
 # 以上构建成了docker镜像,可在官网拉取
 # 根据不同的环境,可以在这里安装对应的依赖
 # RUN pip install protobuf==3.17.3 colorama
@@ -169,11 +174,11 @@ RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
 RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make -DCMAKE_BUILD_TYPE=Release"
 
 
-# # # Load ROS environment at each run
-# COPY ./ros_entrypoint.sh /
-# RUN chmod 755 /ros_entrypoint.sh
-# ENTRYPOINT ["/ros_entrypoint.sh"]
+# # Load ROS environment at each run
+COPY ./ros_entrypoint.sh /
+RUN chmod 755 /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
 
-# CMD ["bash"]
+CMD ["bash"]
 
-# WORKDIR /root/catkin_ws/src
+WORKDIR /root/catkin_ws/src
