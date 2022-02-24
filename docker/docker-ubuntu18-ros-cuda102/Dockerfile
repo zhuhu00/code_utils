@@ -3,12 +3,10 @@
 
 FROM nvidia/cudagl:10.2-devel-ubuntu18.04
 
-# ============以下内容在镜像已有=zhuhu/cuda102-ros-ubuntu18:0.1========
+# ============以下内容在镜像已有=zhuhu/cuda102-ros-ubuntu18========
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-# 修改terminal颜色
-RUN echo -e "\nPS1='\[\e[1;35m\]\u@\h:\[\e[0m\]\[\e[1;33m\]\w\[\e[1;35m\]\[\e[0m\]\[\e[1;34m\]\$ \[\e[0m\]'" >> /root/.bashrc
 # 将sh改为bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -97,6 +95,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # Set up rosdep
 RUN rosdep init
 RUN rosdep update
+RUN echo -e "\nsource /opt/ros/melodic/setup.bash" >> /root/.bashrc
 
 # 安装其他从源码安装的库
 RUN mkdir ~/code_lib
@@ -146,6 +145,9 @@ RUN cat /tmp/condarc >> ~/.bashrc && source ~/.bashrc && source /etc/profile
 ENV PATH /opt/conda/bin:$PATH 
 RUN python --version && pip -V
 
+# 修改terminal颜色
+RUN echo -e "\nPS1='\[\e[1;35m\]\u@\h:\[\e[0m\]\[\e[1;33m\]\w\[\e[1;35m\]\[\e[0m\]\[\e[1;34m\]\$ \[\e[0m\]'" >> /root/.bashrc
+RUN cat /root/.bashrc
 
 #  ===========分割线====以上为cuda102-ubuntu-ros的内容==========
 
@@ -160,26 +162,25 @@ RUN python --version && pip -V
 # RUN pip install alfred-py scipy==1.7.0 pillow opencv-python
 
 
-# 创建ros空间, create catkin workspace
-RUN mkdir -p /root/catkin_ws/src
-WORKDIR /root/catkin_ws
-RUN bash -c "source /opt/ros/melodic/setup.bash && \
-             catkin_make -DCMAKE_BUILD_TYPE=Release"
+# # 创建ros空间, create catkin workspace
+# RUN mkdir -p /root/catkin_ws/src
+# WORKDIR /root/catkin_ws
+# RUN bash -c "source /opt/ros/melodic/setup.bash && \
+#              catkin_make -DCMAKE_BUILD_TYPE=Release"
 
-# Load ROS environment at docker exec bash
-RUN echo "source /opt/ros/melodic/setup.bash" >> /root/.bashrc
-RUN echo "source /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
-##############################################
+# # Load ROS environment at docker exec bash
+# RUN echo -e "\nsource /root/catkin_ws/devel/setup.bash" >> /root/.bashrc
+# ##############################################
 
-# # Build
-RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make -DCMAKE_BUILD_TYPE=Release"
+# # # Build
+# RUN /bin/bash -c "source /opt/ros/melodic/setup.bash && catkin_make -DCMAKE_BUILD_TYPE=Release"
+# RUN echo -e "\nPS1='\[\e[1;35m\]\u@\h:\[\e[0m\]\[\e[1;33m\]\w\[\e[1;35m\]\[\e[0m\]\[\e[1;34m\]\$ \[\e[0m\]'" >> /root/.bashrc
 
+# # # Load ROS environment at each run
+# COPY ./ros_entrypoint.sh /
+# RUN chmod 755 /ros_entrypoint.sh
+# ENTRYPOINT ["/ros_entrypoint.sh"]
 
-# # Load ROS environment at each run
-COPY ./ros_entrypoint.sh /
-RUN chmod 755 /ros_entrypoint.sh
-ENTRYPOINT ["/ros_entrypoint.sh"]
+# CMD ["bash"]
 
-CMD ["bash"]
-
-WORKDIR /root/catkin_ws/src
+# WORKDIR /root/catkin_ws/src

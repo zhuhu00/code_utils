@@ -4,7 +4,7 @@
 version: '2.3'
 services:
   cuda102-ros-ubuntu18:
-    image: zhuhu/cuda102-ros-ubuntu18:0.1
+    image: zhuhu/cuda102-ros-ubuntu18:0.2
     build: .
 
     command: lxterminal
@@ -18,8 +18,8 @@ services:
 
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
-      - ../../deeplabv1_ros:/root/catkin_ws/src/deeplab_ros
-      - ${DATASET_DIR}:/root/Dataset
+      # - ../../panoptic:/root/catkin_ws/src/panoptic_ros
+      # - ${DATASET_DIR}:/root/Dataset
 
     entrypoint: /ros_entrypoint.sh
     network_mode: host

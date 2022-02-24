@@ -7,8 +7,6 @@ FROM nvidia/cudagl:11.0-devel-ubuntu20.04
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
-# 修改terminal颜色
-RUN echo -e "\nPS1='\[\e[1;35m\]\u@\h:\[\e[0m\]\[\e[1;33m\]\w\[\e[1;35m\]\[\e[0m\]\[\e[1;34m\]\$ \[\e[0m\]'" >> /root/.bashrc
 # 将sh改为bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -148,7 +146,8 @@ RUN cat /tmp/condarc >> ~/.bashrc && source ~/.bashrc && source /etc/profile
 # 必须使用这句,才能换python环境
 ENV PATH /opt/conda/bin:$PATH 
 RUN python --version && pip -V
-
+# 修改terminal颜色
+RUN echo -e "\nPS1='\[\e[1;35m\]\u@\h:\[\e[0m\]\[\e[1;33m\]\w\[\e[1;35m\]\[\e[0m\]\[\e[1;34m\]\$ \[\e[0m\]'" >> /root/.bashrc
 
 #  ===========分割线====以上为cuda102-ubuntu-ros的内容==========
 
