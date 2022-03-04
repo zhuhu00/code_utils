@@ -165,7 +165,7 @@ RUN cat /root/.bashrc
 # # 创建ros空间, create catkin workspace
 # RUN mkdir -p /root/catkin_ws/src
 # WORKDIR /root/catkin_ws
-# RUN bash -c "source /opt/ros/melodic/setup.bash && \
+# RUN bash "source /opt/ros/melodic/setup.bash && \
 #              catkin_make -DCMAKE_BUILD_TYPE=Release"
 
 # # Load ROS environment at docker exec bash

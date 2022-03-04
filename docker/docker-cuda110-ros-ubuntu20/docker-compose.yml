@@ -6,6 +6,7 @@ services:
   cuda110-ros-ubuntu20:
     image: zhuhu/cuda110-ros-ubuntu20:0.1
     build: .
+    container_name: cuda110-ros-ubuntu20
 
     command: lxterminal
     runtime: nvidia
@@ -24,5 +25,5 @@ services:
     entrypoint: /ros_entrypoint.sh
     network_mode: host
 
-volumes:
-  cuda110-ros-ubuntu20:
+# volumes:
+#   cuda110-ros-ubuntu20:
