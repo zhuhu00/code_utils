@@ -1,0 +1,29 @@
+services:
+  temp:
+    image: xx  
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+      # args:
+      #   # you can set environment variables, otherwise default values will be used
+      #   USER_NAME: ${HOST_USER_NAME:-gsplat}  # export HOST_USER_NAME=$USER
+      #   GROUP_NAME: ${HOST_GROUP_NAME:-gsplats}
+      #   UID: ${HOST_UID:-1000}  # export HOST_UID=$(id -u)
+      #   GID: ${HOST_GID:-1000}  # export HOST_GID=$(id -g)
+      shm_size: '40gb'
+    shm_size: '40gb'
+    environment:
+      NVIDIA_DISABLE_REQUIRE: 1  # avoid wrong `nvidia-container-cli: requirement error`
+    tty: true
+    volumes:
+        - ../:/root/code
+        - /mnt/data/hzhu/:/root/data
+    ports:
+      - "7898:8888"
+      - "7899:6006"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [gpu]
