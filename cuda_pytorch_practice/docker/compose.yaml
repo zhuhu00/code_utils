@@ -1,6 +1,6 @@
 services:
   temp:
-    # image: xx  
+    image: xx  
     build:
       context: ../
       dockerfile: docker/Dockerfile

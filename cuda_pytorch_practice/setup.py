@@ -1,13 +1,25 @@
-from setuptools import setup, find_packages
-from torch.utils.cpp_extension import BuildExtension, CUDAExtension, CppExtension
+import glob
+import os.path as osp
+from setuptools import setup
+from torch.utils.cpp_extension import CUDAExtension, BuildExtension
+
+
+ROOT_DIR = osp.dirname(osp.abspath(__file__))
+include_dirs = [osp.join(ROOT_DIR, "include")]
+
+sources = glob.glob('*.cpp')+glob.glob('*.cu')
+
 
 setup(
     name='cudacpp_tutorial',
     version='0.1',
     ext_modules=[
-        CppExtension(
+        CUDAExtension(
             name='cudacpp_tutorial',
-            sources=['interpolation.cpp']
+            sources=sources,
+            include_dirs=include_dirs,
+            extra_compile_args={'cxx': ['-O2'],
+                                'nvcc': ['-O2']}
         )
     ],
     cmdclass={
