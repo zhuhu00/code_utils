@@ -17,3 +17,21 @@
     RUN conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia -y \
     && pip install ninja ipdb
     ```
+
+
+安装openssh: `apt-get update；apt-get install openssh-server`
+
+设置sshroot登录：`echo "PermitRootLogin yes" >> /etc/ssh/sshd_config`
+
+重启ssh服务：`service ssh restart`
+
+设置root密码：`passwd root`
+
+也可以不设置密码，传入 `ssh_pub`
+
+过程如下
+```shell
+ssh-keygen -t rsa -b 4096
+# 将生成为的 ~/.ssh/id_rsa.pub，内容贴到 .ssh/authorized_keys中，再重启一下服务器 ssh 服务
+service ssh restart
+```
