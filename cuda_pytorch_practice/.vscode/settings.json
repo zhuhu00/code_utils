@@ -1,0 +1,8 @@
+{
+    "editor.fontSize": 16,
+    "files.associations": {
+        "array": "cpp",
+        "string": "cpp",
+        "string_view": "cpp"
+    }
+}
