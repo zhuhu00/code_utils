@@ -1,5 +1,5 @@
 services:
-  temp:
+  ubuntu22:
     # image: xx  
     build:
       context: ../
@@ -19,10 +19,13 @@ services:
         - ../:/root/code
         - /mnt/data/hzhu/:/root/data
     ports:
+      - "10022:22" # ssh
       - "18888:8888" # jupyter
       - "16006:6006" # tensorboard
-      - "10022:22" # ssh
       - "16007:6007" # other viewers
+      - "16008:6008" # other viewers
+      - "16009:6009" # other viewers
+      - "16010:6010" # other viewers
     deploy:
       resources:
         reservations:

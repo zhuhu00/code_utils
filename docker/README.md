@@ -35,3 +35,42 @@ ssh-keygen -t rsa -b 4096
 # 将生成为的 ~/.ssh/id_rsa.pub，内容贴到 .ssh/authorized_keys中，再重启一下服务器 ssh 服务
 service ssh restart
 ```
+
+# VNC 设置
+```bash
+apt install tigervnc-standalone-server tigervnc-common -y
+
+apt install xfce4 xfce4-goodies xorg dbus-x11 x11-xserver-utils -y
+
+git clone https://github.com/novnc/noVNC.git
+
+# 创建启动脚本
+mkdir $HOME/.vnc
+touch $HOME/.vnc/xstartup
+ 
+# 执行此命令之前在容器内安装了vim
+vim $HOME/.vnc/xstartup
+ 
+## 添加以下脚本(如果有乱码，删除脚本中的中文配置)
+
+#!/bin/bash
+ 
+unset SESSION_MANAGER 
+unset DBUS_SESSION_BUS_ADDRESS 
+startxfce4 &    # launch xface4
+[ -x /etc/vnc/xstartup ] && exec /etc/vnc/xstartup 
+[ -r $HOME/.Xresources ] && xrdb $HOME/.Xresources 
+xsetroot -solid grey    # set background color
+ 
+# 保存并关闭文件。无论何时启动或者重启TigerVNC服务器，都将会自动执行上述命令
+
+# 使用chmod
+chmod +x ~/.vnc/xstartup
+
+vncserver :107 -localhost no
+
+vncserver -localhost novncserver -list
+
+
+./utils/novnc_proxy --vnc localhost:5902 --web /home/noVNC
+```

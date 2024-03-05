@@ -2,11 +2,11 @@
 # https://github.com/cvpaperchallenge/Ascender
 # https://github.com/nerfstudio-project/nerfstudio
 
-# FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
-FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
+FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
+# FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
 # FROM nvidia/cuda:11.7.1-devel-ubuntu20.04
 
-ENV COMPOSE_PROJECT_NAME=temp
+ENV COMPOSE_PROJECT_NAME=ubuntu22
 # 将sh改为bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
@@ -42,8 +42,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
     wget \
     tmux \
     vim \
+    zsh \ 
     openssh-server \
-    zsh\
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
 # conda by root user
@@ -60,7 +61,7 @@ RUN mkdir -p /root/.ssh && touch /root/.ssh/authorized_keys && echo "ssh-rsa AAA
 
 # change file permission
 RUN mkdir -p /etc/periodic/daily \
-    && echo "chown 1016:1016 /root/ -R" >> /etc/periodic/daily/change-permissions.sh \
+    && echo "chown 1016:1016 /root/code/ /root/data/ -R" >> /etc/periodic/daily/change-permissions.sh \
     &&  chmod +x /etc/periodic/daily/change-permissions.sh \
     && (crontab -l 2>/dev/null; echo "*/2 * * * * /etc/periodic/daily/change-permissions.sh") | crontab -
 
@@ -68,12 +69,15 @@ RUN mkdir -p /etc/periodic/daily \
 # change color of bash prompt
 RUN echo "PS1='\[\e[1;35m\]\u@${COMPOSE_PROJECT_NAME}\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\[\e[1;33m\]\$ \[\e[0m\]'" >> /etc/profile && echo "PS1='\[\e[1;35m\]\u@${COMPOSE_PROJECT_NAME}\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\]\[\e[1;33m\]\$ \[\e[0m\]'" >> ~/.bashrc
 
+RUN printf '#!/bin/bash\n\nservice ssh start\nservice cron start\n\n \ntail -f /dev/null\n' > /start.sh && chmod +x /start.sh
+
 
 # torch 环境，默认 2.0.0, cuda 11.8, python 3.10
-RUN conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia -y \
-    && pip install ninja ipdb
+# RUN conda install pytorch==2.0.0 torchvision==0.15.0 torchaudio==2.0.0 pytorch-cuda=11.8 -c pytorch -c nvidia -y 
+RUN  pip install ninja ipdb
 
 RUN mkdir -p /run/sshd
-CMD ["/usr/sbin/sshd", "-D"]
+CMD ["/start.sh"]
+# CMD ["/usr/sbin/sshd", "-D"]
 
 WORKDIR /root/code
