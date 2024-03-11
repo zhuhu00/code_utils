@@ -1,5 +1,5 @@
 services:
-  ubuntu22:
+  temp:
     # image: xx  
     build:
       context: ../

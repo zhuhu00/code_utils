@@ -6,7 +6,7 @@ FROM nvidia/cuda:11.8.0-devel-ubuntu22.04
 # FROM nvidia/cuda:11.8.0-devel-ubuntu20.04
 # FROM nvidia/cuda:11.7.1-devel-ubuntu20.04
 
-ENV COMPOSE_PROJECT_NAME=ubuntu22
+ENV COMPOSE_PROJECT_NAME=temp
 # 将sh改为bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
